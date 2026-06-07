@@ -1,6 +1,6 @@
 
 import os
-import joblib
+import pickle
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -314,12 +314,14 @@ def load_model():
         st.error("Model file not found: stakeholder_collaboration_model.pkl")
         st.stop()
 
-    model = joblib.load(model_path)
+   with open(model_path, "rb") as f:
+    model = pickle.load(f)
 
-    if os.path.exists(features_path):
-        features = joblib.load(features_path)
-    else:
-        features = FEATURE_COLS
+if os.path.exists(features_path):
+    with open(features_path, "rb") as f:
+        features = pickle.load(f)
+else:
+    features = FEATURE_COLS
 
     return model, features
 
